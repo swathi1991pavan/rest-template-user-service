@@ -1,6 +1,8 @@
 package com.cglia.userservice.controller;
 
 import lombok.AllArgsConstructor;
+
+import com.cglia.userservice.dto.DepartmentDto;
 import com.cglia.userservice.dto.ResponseDto;
 import com.cglia.userservice.model.User;
 import com.cglia.userservice.service.UserService;
@@ -27,5 +29,18 @@ public class UserController {
     public ResponseEntity<ResponseDto> getUser(@PathVariable("id") int userId){
         ResponseDto responseDto = userService.getUser(userId);
         return ResponseEntity.ok(responseDto);
+    }
+    
+    @PostMapping("/create")
+    public DepartmentDto create(@RequestBody DepartmentDto department) {
+    	DepartmentDto savedDepartmentDto = new DepartmentDto();
+    	savedDepartmentDto = userService.create(department);
+    	return savedDepartmentDto;
+    }
+    
+    @DeleteMapping("{id}")
+    public void  deleteDepartment(@PathVariable int id) {
+    	userService.deleteDepartment(id);
+    	
     }
 }

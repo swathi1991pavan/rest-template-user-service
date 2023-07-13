@@ -1,6 +1,7 @@
 package com.cglia.userservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService{
         UserDto userDto = mapToUser(user);
 
         ResponseEntity<DepartmentDto> responseEntity = restTemplate
-                .getForEntity("http://localhost:8080/api/departments/" + user.getDepartmentId(),
+                .getForEntity("http://localhost:8090/api/departments/" + user.getDepartmentId(),
                 DepartmentDto.class);
 
         DepartmentDto departmentDto = responseEntity.getBody();
@@ -53,6 +54,26 @@ public class UserServiceImpl implements UserService{
         userDto.setEmail(user.getEmail());
         return userDto;
     }
+
+	@Override
+	public DepartmentDto create(DepartmentDto department) {
+		String urlString = "http://localhost:8090/api/departments";
+		HttpEntity<DepartmentDto > departEntity = new HttpEntity<>(department);
+		ResponseEntity<DepartmentDto> responseEntity =
+		restTemplate.postForEntity( urlString, departEntity,DepartmentDto.class);
+		return responseEntity.getBody();
+	}
+	
+	
+	
+	
+	@Override
+	public void deleteDepartment(int id) {
+		String urlString = "http://localhost:8090/api/departments/"+id;
+		
+		
+		restTemplate.delete(urlString);
+	}
 }
 
 
